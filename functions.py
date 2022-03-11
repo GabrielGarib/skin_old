@@ -116,7 +116,7 @@ def train(model, train_dataloader, val_dataloader, optimizer, criterion, device,
 
     t0 = time.time()
     print(' Epoch    Train Loss    Val Loss    Train Acc    Val Acc    Best    Time [min]')
-    print('-'*77)
+    print('-'*79)
 
     for epoch in range(num_epochs):
         t1 = time.time()

@@ -3,10 +3,10 @@ import torch.nn as nn
 
 class MetaEffnet(nn.Module):
 
-    def __init__(self, effnet, num_classes, concat=False, n_meta_data=0, neurons_reducer_block=256,
+    def __init__(self, effnet, num_classes, concat=False, n_metadata=0, neurons_reducer_block=256,
                  p_dropout=0.5, n_feat_conv=1280):
 
-        super(MetaEffnet, self).__init__()
+        super().__init__()
 
         self.concat = concat
         self.effnet = effnet
@@ -20,10 +20,10 @@ class MetaEffnet(nn.Module):
                 nn.ReLU(),
                 nn.Dropout(p=p_dropout)
             )
-            self.classifier = nn.Linear(neurons_reducer_block + n_meta_data, num_classes)
+            self.classifier = nn.Linear(neurons_reducer_block + n_metadata, num_classes)
         else:
             self.reducer_block = None
-            self.classifier = nn.Linear(n_feat_conv + n_meta_data, num_classes)
+            self.classifier = nn.Linear(n_feat_conv + n_metadata, num_classes)
 
     def forward(self, img, metadata=None):
         x = self.effnet.extract_features(img)

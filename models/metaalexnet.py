@@ -1,13 +1,13 @@
 import torch
 import torch.nn as nn
 
-class MetaResnet(nn.Module):
+class MetaAlexnet(nn.Module):
 
-    def __init__(self, resnet, num_classes, concat=False, n_metadata=0, neurons_reducer_block=256,
-                 p_dropout=0.5, n_feat_conv=2048):
+    def __init__(self, alexnet, num_classes, concat=False, n_metadata=0, neurons_reducer_block=256,
+                 p_dropout=0.5, n_feat_conv=9216):
 
         super().__init__()
-        self.features = nn.Sequential(*list(resnet.children())[:-1])
+        self.features = nn.Sequential(*list(alexnet.children())[:-1])
         self.concat = concat
 
         if neurons_reducer_block > 0:

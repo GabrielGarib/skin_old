@@ -1,13 +1,13 @@
 import torch
 import torch.nn as nn
 
-class MetaResnet(nn.Module):
+class MetaModel(nn.Module):
 
-    def __init__(self, resnet, num_classes, concat=False, n_metadata=0, neurons_reducer_block=256,
+    def __init__(self, model, num_classes, concat=False, n_metadata=0, neurons_reducer_block=256,
                  p_dropout=0.5, n_feat_conv=2048):
 
         super().__init__()
-        self.features = nn.Sequential(*list(resnet.children())[:-1])
+        self.features = nn.Sequential(*list(model.children())[:-1])
         self.concat = concat
 
         if neurons_reducer_block > 0:
@@ -22,8 +22,12 @@ class MetaResnet(nn.Module):
             self.reducer_block = None
             self.classifier = nn.Linear(n_feat_conv + n_metadata, num_classes)
 
-    def forward(self, img, metadata=None):
+    def pre_feautures(self, img):
         x = self.features(img)
+        return x
+
+    def forward(self, img, metadata=None):
+        x = self.pre_feautures(img)
         x = x.view(x.size(0), -1) #flatting
         if self.concat:
             if self.reducer_block is not None:
